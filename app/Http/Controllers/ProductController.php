@@ -10,27 +10,29 @@ class ProductController extends Controller
     //ajout un nouveau product
     public function store(Request $request)
     {
-        $produc=new Product(
-            $request->all()
-        );
-
+        $produc=new Product($request->all(),[
+            'designation' => 'required',
+            'description' => 'required',
+            'producer_id' => 'required',
+            'current_quantity' => 'required',
+            'state' => 'required',
+            'initial_quantity' => 'required',
+            'date_production' => 'required'
+        ]);
         $produc->save();
-
         return view('/home');//page de redirection apres ajout
-
     }
 
     //retourne tous les products
     public function show()
     {
-
         return view('/voir',['products'=> Product::all()]); //remplacer la vue par #voir par le nom de la vue a retourner
     }
 
     //retourne un product sur base de son id
     public function show_by_id_user($id_user)
     {
-        view('/voir',['product'=> Product::where('id', $id_user)->get()]);//remplacer la vue par #voir par le nom de la vue a retourner page du product
+        return view('/voir',['product'=> Product::where('id', $id_user)->get()]);//remplacer la vue par #voir par le nom de la vue a retourner page du product
     }
 
 
@@ -50,8 +52,6 @@ class ProductController extends Controller
         $product->fill($input)->save();
 
         return view('/home'); //changer home par la vue a retourner
-
-
     }
 
 }
